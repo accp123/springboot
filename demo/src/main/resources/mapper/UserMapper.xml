@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.UserMapper">
+
+    <insert id="insert" parameterType="com.example.demo.entity.User">
+        insert into user(username,password,birthday) values(#{userName},#{password},#{birthday})
+    </insert>
+
+    <select id="getById" parameterType="java.lang.Integer" resultType="com.example.demo.entity.User">
+        select id,username,password,birthday from user where id = #{id}
+    </select>
+
+    <select id="getList"  resultType="com.example.demo.entity.User">
+        select id,username,password,birthday from user order by id desc
+    </select>
+    <delete id="deleteById" parameterType="com.example.demo.entity.User">
+        DELETE  from user where id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.example.demo.entity.User">
+      UPDATE user set userName=#{userName},birthday=#{birthday} where id = #{id}
+    </update>
+
+    <select id="getByName" parameterType="java.lang.String" resultType="com.example.demo.entity.User">
+        select id,username,password,birthday from user where username = #{username}
+    </select>
+</mapper>

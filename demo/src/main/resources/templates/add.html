@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="#" th:action="@{/add}" th:object="${user}" method="post">
+
+
+    <p th:if="${#fields.hasErrors('userName')} " th:errors="*{userName}"  class="text-danger"></p>
+
+    <p th:if="${#fields.hasErrors('birthday')} " th:errors="*{birthday}"  class="text-danger"></p>
+    <table>
+
+        <tr>  <td>用户名<input name="userName" type="text"   /></td> </tr>
+        <tr>  <td>密码<input name="password" type="password"  /></td> </tr>
+        <tr>  <td>生日<input name="birthday" type="text"  /></td> </tr>
+        <tr>
+              <td>
+                <input type="button" value="返回" onclick="location.href='/getList'"/>
+                  <input type="submit" value="新  增" />
+
+              </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

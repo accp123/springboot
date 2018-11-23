@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="#" th:action="@{/update}" th:object="${user}"  method="post">
+    <table>
+        <tr>  <td>编号<input name="id" type="hidden"  th:field="${user.id}" /></td> </tr>
+        <tr>  <td>用户名<input name="userName" type="text"  th:field="${user.userName}" /></td> </tr>
+        <tr>  <td>密码<input name="password" type="text"  th:field="${user.password}"/></td> </tr>
+        <tr>  <td>生日<input name="birthday" type="text" th:value="${#dates.format(user.birthday, 'yyyy-MM-dd HH:mm')}"/></td> </tr>
+        <tr>
+              <td>
+                <input type="button" value="返回" onclick="location.href='/getList'"/>
+                  <input type="submit" value="保存" />
+                <!--<input type="button" value="保存" onclick="updateUser()"/>-->
+              </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

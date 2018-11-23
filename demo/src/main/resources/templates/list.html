@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>查询</title>
+    <script type="text/javascript">
+        function deleteUser(id)
+        {
+            var flag = confirm("你确定删除吗？");
+            if(flag)
+            {
+            location.href='delete?id='+id;
+            }
+        }
+
+        function toUpdateUserForm(id)
+        {
+            location.href='updateUI?id='+id;
+        }
+
+    </script>
+
+   <!-- <script type="text/javascript" th:src="@{/js/list.js}"></script>
+    <link th:href="@{/css/list.css}" rel="stylesheet" type="text/css">-->
+    <link rel="stylesheet" href="css/list.css"/>
+    <!--<script type="text/javascript" src="js/list.js"></script>-->
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <style type="text/css">
+        .odd{
+            background:green;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>hello</h1>
+    <a href="addUI">新增数据</a>
+    <table border="1" width="60%">
+        <tr th:class="${index.odd}?'odd'"  th:each="user,index:${pageInfo.list}">
+            <td th:text="${user.userName}"></td>
+            <td th:text="${user.password}"></td>
+            <td th:text="${user.birthday}"></td>
+
+            <td th:text="${#dates.format(user.birthday, 'yyyy-MM-dd HH:mm')}"></td>
+            <td>
+                <input type="button" value="修改" th:onclick="'toUpdateUserForm(\''+${user.id}+'\');'"/>
+                <input type="button" value="删除" th:onclick="'deleteUser(\''+${user.id}+'\');'"/>
+
+                <a th:href="'updateUIA/' + ${user.id }" >修改[a]</a>
+                <a th:href="@{updateUI(id=${user.id})}">修改C</a>
+                <a th:href="${'updateUI?id=' + user.id }" >修改[b]</a>
+            </td>
+        </tr>
+
+    </table>
+    <form id="myForm" action="getList" method="post">
+        <input type="hidden" name="pageNum" id="currentPage"/>
+    </form>
+    <span th:if="${pageInfo.hasPreviousPage}" >
+        <a href="javascript:first();" id="first">首 页</a>
+        <a href="javascript:prev();" id="prev">上一页</a>
+    </span>
+
+
+    <span th:each="cp:${pageInfo.navigatepageNums}">
+
+        &nbsp;
+            <a th:href="${'javascript:cps('+cp+')'}"  th:style="'color:' + @{(${cpStat.current==pageInfo.pageNum} ? 'blue' : 'red')} ">
+                <span th:text="${cp}"></span>
+            </a>
+        &nbsp;
+
+    </span>
+
+
+    <span th:if="${pageInfo.hasNextPage}" >
+        <a href="javascript:next();" id="next">下一页</a>
+        <a href="javascript:last();" id="last">尾 页</a>
+    </span>
+
+    <input type="button" value="测试" id="btn"/>
+    <script type="text/javascript">
+        $("#btn").click(function(){
+
+            $.ajax({
+                type: "POST",
+                url: "getListAjax",
+                dataType:"json",
+                success: function(msg){
+                    alert(  msg );
+                }
+            });
+
+        });
+
+    </script>
+
+
+    <script th:inline="javascript">
+        //pageNum 当前页
+        var firstPage = 1;//首页
+        var prePage =[[${pageInfo.prePage}]] ;//上一页
+        var nextPage = [[${pageInfo.nextPage}]];//下一页
+        var lastPage = [[${pageInfo.pages}]];//尾页
+
+
+    </script>
+
+
+    <script type="text/javascript">
+
+        //首页
+        function first()
+        {
+            $("#currentPage").val(1);
+            $("#myForm").submit();
+        }
+        function prev()
+        {
+            $("#currentPage").val(prePage);
+            $("#myForm").submit();
+        }
+
+        function next()
+        {
+            $("#currentPage").val(nextPage);
+            $("#myForm").submit();
+        }
+        //尾页
+        function last()
+        {
+            $("#currentPage").val(lastPage);
+            $("#myForm").submit();
+        }
+
+        function cps(xx)
+        {
+            $("#currentPage").val(xx);
+            $("#myForm").submit();
+        }
+    </script>
+</body>
+</html>
